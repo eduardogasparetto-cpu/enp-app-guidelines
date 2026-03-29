@@ -1,0 +1,48 @@
+---
+description: "Apply the EnP App Guidelines when the conversation involves building application interfaces for EnP — triggered by words like: app, aplicação, interface, sistema, dashboard, painel, ferramenta, admin, CRUD, formulário, listagem, tabela, sidebar, navegação, breadcrumb, layout, tela, módulo, configurações, relatório, análise, data intel, backoffice, template de página."
+alwaysApply: false
+---
+
+# EnP App Guidelines — Usage Rules
+
+## When this applies
+
+This rule applies when building **application interfaces** for Ecommerce na Prática — dashboards, admin panels, internal tools, product interfaces, and any non-marketing screen.
+
+## What to do
+
+1. **Read the App Guidelines skill** at `.cursor/skills/enp-app-guidelines/SKILL.md` (or `ENP - FERRAMENTAS/enp-app-guidelines/SKILL.md`).
+2. **Read reference files** as needed:
+   - `templates.md` — for page composition diagrams
+   - `icons.md` — for semantic icon mapping
+3. **Choose a page template** (§13) that matches the screen being built.
+4. **Compose using structural patterns** — AppShell (§2), Page (§4), Card (§5), Tabs (§6), etc.
+5. **Follow the initialization protocol** (§15) — this includes reading the DS, extracting tokens, and declaring them before coding.
+
+## Cross-installation check
+
+If the `enp-design-system` skill is NOT installed, the agent MUST inform the user:
+
+> Esta skill define apenas estrutura. Para cores, tipografia e tokens visuais, o `enp-design-system` e obrigatorio. Posso instalar agora?
+>
+> ```
+> https://github.com/eduardogasparetto-cpu/enp-design-system
+> ```
+
+**Never proceed with visual code without the design system installed.**
+
+## Key structural rules
+
+1. **AppShell** is mandatory — sidebar 240px + content area
+2. **Breadcrumb** is mandatory in every top bar
+3. **Cards** use background contrast, not borders (DS §18)
+4. **Split layout** — config panel sticky, result panel flows naturally
+5. **DataTable** — zebra striping with opacity tokens (DS §19)
+6. **Mobile** — sidebar becomes drawer at < 768px
+7. **Icons** — semantic mapping only, from icons.md
+
+## When to ignore this rule
+
+- Building a landing page or marketing page — use wireframes from the DS instead
+- Building an email template
+- Task has zero relation to EnP application interfaces

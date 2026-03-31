@@ -1,0 +1,72 @@
+name: Slack — Skill atualizada
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Extract commit info
+        id: info
+        run: |
+          echo "author=$(git log -1 --format='%an')" >> "$GITHUB_OUTPUT"
+          echo "message=$(git log -1 --format='%s')" >> "$GITHUB_OUTPUT"
+          echo "sha_short=$(git rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+          FILES=$(git diff --name-only HEAD~1 HEAD | head -10 | tr '\n' ', ' | sed 's/,$//')
+          echo "files=$FILES" >> "$GITHUB_OUTPUT"
+
+      - name: Send Slack notification
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -X POST "$SLACK_WEBHOOK_URL" \
+            -H 'Content-Type: application/json' \
+            -d @- <<'PAYLOAD'
+          {
+            "blocks": [
+              {
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "📐 EnP App Guidelines atualizado",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  { "type": "mrkdwn", "text": "*Commit:*\n<${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|`${{ steps.info.outputs.sha_short }}`>" },
+                  { "type": "mrkdwn", "text": "*Autor:*\n${{ steps.info.outputs.author }}" }
+                ]
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Mensagem:*\n${{ steps.info.outputs.message }}"
+                }
+              },
+              {
+                "type": "context",
+                "elements": [
+                  { "type": "mrkdwn", "text": "📁 Arquivos: `${{ steps.info.outputs.files }}`" }
+                ]
+              },
+              {
+                "type": "divider"
+              },
+              {
+                "type": "context",
+                "elements": [
+                  { "type": "mrkdwn", "text": "Lembre-se de sincronizar as cópias locais nos projetos que usam esta skill." }
+                ]
+              }
+            ]
+          }
+          PAYLOAD

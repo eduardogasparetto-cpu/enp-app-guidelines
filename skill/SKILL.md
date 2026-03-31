@@ -8,8 +8,8 @@ description: >-
   page templates, navigation patterns, icon mapping, and responsive rules.
   Does NOT contain colors or visual tokens — those come from enp-design-system.
   Always use this skill together with enp-design-system when building EnP apps.
-version: 1.1.0
-updated: 2026-03-29
+version: 1.2.0
+updated: 2026-03-31
 ---
 
 # EnP — App & Interface Guidelines
@@ -174,19 +174,68 @@ Container de conteúdo elevado sobre o fundo da página.
 - Overflow hidden
 - Header e footer separados por borda sutil (token de divisor)
 
+### CSS de referência (modo escuro institucional)
+
+```css
+.card {
+  background: var(--bg-card);       /* #2A2D33 */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(13, 27, 46, 0.35);
+}
+.card__header, .card__footer {
+  border-bottom: 1px solid var(--table-divider);  /* rgba(255,255,255,0.06) */
+  padding: 16px 24px;
+}
+.card__body { padding: 24px; }
+```
+
 ---
 
 ## 6. Tabs
 
-Navegação horizontal dentro de cards ou pages.
+Navegação horizontal dentro de cards ou pages. Base reta (NÃO pill/chip).
 
 | Propriedade | Valor |
 |---|---|
 | Posição | Topo do card, abaixo do header |
 | Indicador ativo | Borda inferior 2px, cor de CTA (DS §15) |
-| Texto ativo | Cor de CTA, semibold |
-| Texto inativo | Cor secundária, medium |
+| Texto ativo | Cor de CTA, font-weight 600 |
+| Texto inativo | Cor secundária (Gray 40), font-weight 400 |
 | Mobile | Scroll horizontal com `overflow-x: auto` |
+
+### CSS de referência (modo escuro institucional)
+
+```css
+/* Container das tabs */
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--table-divider); }
+
+/* Tab individual */
+.tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-meta);  /* Gray 40 #979BA1 */
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Tab ativa */
+.tab--active {
+  font-weight: 600;
+  color: var(--accent);  /* Sky Blue #31B3F9 */
+  border-bottom-color: var(--accent);
+}
+```
+
+### Proibições
+
+- **NUNCA** usar `border-radius` em tabs — base deve ser reta
+- **NUNCA** usar `background` colorido para indicar tab ativa — usar apenas `border-bottom`
+- **NUNCA** usar font-weight 500 ou 700 — apenas 400 (inativo) e 600 (ativo)
 
 ---
 
@@ -254,6 +303,35 @@ Tabela de dados com estrutura de camadas. Tokens visuais em DS §19.
 - Paginação: abaixo da tabela, à direita
 - Mobile: scroll horizontal com `overflow-x: auto`
 
+### CSS de referência (modo escuro institucional)
+
+```css
+.datatable { width: 100%; border-collapse: collapse; }
+
+.datatable th {
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-meta);            /* #979BA1 */
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+  text-align: left;
+  background: var(--table-header-bg); /* rgba(255,255,255,0.07) */
+  border-bottom: 1px solid var(--table-divider);
+}
+
+.datatable td {
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-body);            /* #BDC0C6 */
+  border-bottom: 1px solid var(--table-divider);  /* rgba(255,255,255,0.06) */
+}
+
+.datatable tr:nth-child(even) { background: var(--table-zebra); /* rgba(255,255,255,0.025) */ }
+.datatable tr:last-child td { border-bottom: none; }
+```
+
 ---
 
 ## 11. Feedback & Overlays
@@ -269,6 +347,23 @@ Inline. Ícone + título opcional + mensagem. Variantes: success, error, warning
 ### Modal
 
 Overlay conforme DS §10. Centro da tela. Header (título + close) → Body → Footer. Largura: 480px (padrão), 640px (largo).
+
+```css
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13, 27, 46, 0.70);
+  z-index: 1055;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 32px;
+  width: 100%; max-width: 480px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+.modal--wide { max-width: 640px; }
+```
 
 ### Confirmation Modal
 
@@ -351,6 +446,19 @@ Listar explicitamente os tokens que serão usados. Se um valor não está na lis
 2. Compor com padrões estruturais (§2–11)
 3. Selecionar ícones por função (`icons.md`)
 4. Aplicar tokens visuais do Passo 4
+
+**Passo 6 — Checklist de componentes (obrigatório).**
+Antes de implementar, listar TODOS os componentes dos §2–11 que a tela usará. Para cada um, citar a regra de spec. Exemplo:
+
+```
+Componentes desta tela:
+- Card → §5: bg-card, radius 16px, shadow, sem borda
+- Tabs → §6: underline 2px accent, fw 600/400, base reta
+- DataTable → §10: zebra, th uppercase 12px 0.10em, last-child sem border
+- Modal → §11: z-index 1055, radius 16px, overlay 70%
+```
+
+Se um componente aparece no código mas NÃO foi listado neste passo, é violação. O agente deve parar e revisar.
 
 ### Regras negativas
 

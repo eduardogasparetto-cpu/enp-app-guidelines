@@ -1,6 +1,6 @@
 ---
 description: "Apply the EnP App Guidelines when the conversation involves building application interfaces for EnP — triggered by words like: app, aplicação, interface, sistema, dashboard, painel, ferramenta, admin, CRUD, formulário, listagem, tabela, sidebar, navegação, breadcrumb, layout, tela, módulo, configurações, relatório, análise, data intel, backoffice, template de página."
-alwaysApply: false
+alwaysApply: true
 ---
 
 # EnP App Guidelines — Usage Rules
@@ -40,6 +40,16 @@ If the `enp-design-system` skill is NOT installed, the agent MUST inform the use
 5. **DataTable** — zebra striping with opacity tokens (DS §19)
 6. **Mobile** — sidebar becomes drawer at < 768px
 7. **Icons** — semantic mapping only, from icons.md
+
+## Pre-implementation component checklist (MANDATORY)
+
+Before writing ANY visual code, the agent MUST:
+
+1. **List all components** from §2–11 that the screen will use (Tabs, Card, DataTable, FormField, Modal, etc.)
+2. **For each component, cite the spec rule** — e.g. "Tabs → §6: underline 2px CTA, text 600 active / 400 inactive"
+3. **If a component appears in the code but was NOT listed**, it is a violation — the agent must stop and review
+
+This checklist prevents the agent from defaulting to generic UI patterns instead of the specified structural rules.
 
 ## When to ignore this rule
 

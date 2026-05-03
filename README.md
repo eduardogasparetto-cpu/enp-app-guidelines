@@ -1,19 +1,5 @@
-# enp-app-guidelines - DEPRECATED
+# enp-app-guidelines — descontinuado
 
-Este repositório foi **absorvido** no monorepo principal:
+Este repositório foi absorvido pelo monorepo principal do EnP Design System a partir da versão 1.3.0. As diretrizes de estrutura e interação de aplicações vivem agora como skill irmão dentro de [enp-design-system](https://github.com/eduardogasparetto-cpu/enp-design-system).
 
-https://github.com/eduardogasparetto-cpu/enp-design-system
-
-A partir da versão 1.3.0 do `enp-app-guidelines`, ele vive como skill irmão dentro do `enp-design-system`, junto com `enp-design-system`, `enp-audit`, `enp-polish` e `enp-clarify`.
-
-## Migração
-
-```bash
-rm -rf ~/.claude/skills/enp-app-guidelines
-
-git clone https://github.com/eduardogasparetto-cpu/enp-design-system.git
-cd enp-design-system
-bash install.sh
-```
-
-Este repositório fica como arquivo histórico.
+Documentação detalhada (conteúdo anterior do README): [docs/documentacao-completa.md](docs/documentacao-completa.md)
